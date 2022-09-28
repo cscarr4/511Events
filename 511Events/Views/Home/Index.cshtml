@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Account Information";
+}
+@using _511Events.Logic
+
+<div class="text-center">
+    <h2 class=display-6>Enter Azure Data Lake Storage Gen2 Account Information</h2>
+    <form id="requestForm">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Account Name</span>
+            </div>
+            <input name="accountName" id="accountName" type="text" class="form-control" placeholder="Account Name" />
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Account Key</span>
+            </div>
+            <input name="accountKey" id="accountKey" type="password" class="form-control" placeholder="Account Key" />
+        </div>
+        <div class="form-group">
+            <button id="submitButton" type="button" class="btn btn-primary" onclick="submitRequest()">Submit</button>
+        </div>
+    </form>
+
+@Html.ProgressBar()
+</div>
+
+@section Scripts{
+    <script>
+        function submitRequest() {
+            document.getElementById("submitButton").disabled = true;
+
+            var data = $("#requestForm").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/Home/GatherEvents',
+                data: data,
+                success: function(result) {
+                    document.getElementById("submitButton").disabled = false;
+                },
+                error: function() {
+                    document.getElementById("submitButton").disabled = false;
+                }
+            })
+        }
+    </script>
+}
